@@ -22,21 +22,23 @@
    3. This notice may not be removed or altered from any source distribution.
 
    Rene Nyffenegger rene.nyffenegger@adp-gmbh.ch
-*/
+ */
 #pragma once
 #ifndef CHAMELEON_H__
-#define CHAMELEON_H__
+# define CHAMELEON_H__
 
-#include <string>
-#include <stdio.h>
-#include <stdlib.h>
+# include <string>
+# include <stdio.h>
+# include <stdlib.h>
 
 class Chameleon {
 public:
-  Chameleon() {};
+
+  Chameleon() {}
+
   explicit Chameleon(const std::string&);
   explicit Chameleon(double);
-  explicit Chameleon(const char*);
+  explicit Chameleon(const char *);
 
   Chameleon(const Chameleon&);
   Chameleon& operator=(Chameleon const&);
@@ -51,7 +53,8 @@ public:
   operator bool() const;
 
 private:
+
   std::string value_;
 };
 
-#endif
+#endif // ifndef CHAMELEON_H__

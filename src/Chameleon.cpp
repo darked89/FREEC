@@ -22,7 +22,7 @@
    3. This notice may not be removed or altered from any source distribution.
 
    Rene Nyffenegger rene.nyffenegger@adp-gmbh.ch
-*/
+ */
 
 #include <string>
 #include <sstream>
@@ -36,12 +36,13 @@ Chameleon::Chameleon(std::string const& value) {
 
 #include <iostream>
 
-Chameleon::Chameleon(const char* c) {
+Chameleon::Chameleon(const char *c) {
   value_ = c;
 }
 
 Chameleon::Chameleon(double d) {
   std::stringstream s;
+
   s << d;
   value_ = s.str();
 }
@@ -57,6 +58,7 @@ Chameleon& Chameleon::operator=(Chameleon const& other) {
 
 Chameleon& Chameleon::operator=(double i) {
   std::stringstream s;
+
   s << i;
   value_ = s.str();
   return *this;
@@ -84,6 +86,9 @@ Chameleon::operator int() const {
 }
 
 Chameleon::operator bool() const {
-  const char* value_s = value_.c_str();
-  return !strcmp(value_s, "1") || !strcasecmp(value_s, "true") || !strcasecmp(value_s, "on");
+  const char *value_s = value_.c_str();
+
+  return !strcmp(value_s, "1") || !strcasecmp(value_s, "true") || !strcasecmp(
+    value_s,
+    "on");
 }
