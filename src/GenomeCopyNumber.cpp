@@ -75,7 +75,7 @@ void GenomeCopyNumber::readCopyNumber(std::string const& mateFileName,
                   readNumber * refGenomeSize_));
   cout << "\t evaluated window size:\t" << windowSize << "\n";
 
-  for (int i = 0; i < (int)names.size(); i++) {
+  for (int i = 0; i < (int)names.size(); ++i) {
     ChrCopyNumber chrCopyNumber(windowSize, lengths[i], names[i]);
     chromosomesInd_.insert(pair<string, int>(names[i], i));
     chrCopyNumber_.push_back(chrCopyNumber);
@@ -108,7 +108,7 @@ void GenomeCopyNumber::setNormalContamination(float normalContamination) {
   vector<ChrCopyNumber>::iterator it;
 
   for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end();
-       it++) it->setNormalContamination(normalContamination);
+       ++it) it->setNormalContamination(normalContamination);
 }
 
 bool GenomeCopyNumber::ifHasBAF() {
@@ -122,7 +122,7 @@ void GenomeCopyNumber::setSex(std::string sex) {
   if (sex.compare("XX") == 0) {
     vector<ChrCopyNumber>::iterator it;
 
-    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
       string::size_type pos = 0;
 
       if ((pos = it->getChromosome().find("Y", pos)) != string::npos) {
@@ -174,7 +174,7 @@ void GenomeCopyNumber::readCopyNumber(std::string const& mateFileName,
   readFileWithGenomeInfo(chrLenFileName, names, lengths);
   refGenomeSize_ = sum(lengths);
 
-  for (int i = 0; i < (int)names.size(); i++) {
+  for (int i = 0; i < (int)names.size(); ++i) {
     ChrCopyNumber chrCopyNumber(windowSize, lengths[i], names[i], step,
                                 targetBed);
     chromosomesInd_.insert(pair<string, int>(names[i], i));
@@ -198,7 +198,7 @@ void GenomeCopyNumber::readCopyNumber(std::string const& mateFileName,
   if (targetBed != "") {
     vector<int> toErase;
 
-    for (int i = 0; i < (int)names.size(); i++) {
+    for (int i = 0; i < (int)names.size(); ++i) {
       if (chrCopyNumber_[i].getExons_Countchr() == 0) {
         toErase.push_back(i);
       }
@@ -237,7 +237,7 @@ void GenomeCopyNumber::initCopyNumber(std::string const& chrLenFileName,
     readFileWithGenomeInfo(chrLenFileName, names, lengths);
     refGenomeSize_ = sum(lengths);
 
-    for (int i = 0; i < (int)names.size(); i++) {
+    for (int i = 0; i < (int)names.size(); ++i) {
       ChrCopyNumber chrCopyNumber(windowSize, lengths[i], names[i], step);
       chromosomesInd_.insert(pair<string, int>(names[i], i));
       chrCopyNumber_.push_back(chrCopyNumber);
@@ -248,7 +248,7 @@ void GenomeCopyNumber::initCopyNumber(std::string const& chrLenFileName,
     readFileWithGenomeInfo(chrLenFileName, names, lengths);
     refGenomeSize_ = sum(lengths);
 
-    for (int i = 0; i < (int)names.size(); i++) {
+    for (int i = 0; i < (int)names.size(); ++i) {
       ChrCopyNumber chrCopyNumber(windowSize,
                                   lengths[i],
                                   names[i],
@@ -279,7 +279,7 @@ void GenomeCopyNumber::calculateBreakpoints(double breakPointThreshold,
     "ChrCopyNumber_calculateBreakpoint");
 
   for (vector<ChrCopyNumber>::iterator it = chrCopyNumber_.begin();
-       it != chrCopyNumber_.end(); it++) {
+       it != chrCopyNumber_.end(); ++it) {
     ChrCopyNumber& chrCopyNumber                       = *it;
     ChrCopyNumberCalculateBreakpointArgWrapper *bkpArg =
       new ChrCopyNumberCalculateBreakpointArgWrapper(chrCopyNumber,
@@ -301,7 +301,7 @@ void GenomeCopyNumber::calculateBAFBreakpoints(double breakPointThreshold,
     "ChrCopyNumber_calculateBAFBreakpoint");
 
   for (vector<ChrCopyNumber>::iterator it = chrCopyNumber_.begin();
-       it != chrCopyNumber_.end(); it++) {
+       it != chrCopyNumber_.end(); ++it) {
     ChrCopyNumber& chrCopyNumber                       = *it;
     ChrCopyNumberCalculateBreakpointArgWrapper *bkpArg =
       new ChrCopyNumberCalculateBreakpointArgWrapper(chrCopyNumber,
@@ -330,9 +330,9 @@ void GenomeCopyNumber::calculateBAFBreakpoints(double breakPointThreshold,
         "\n..no chromosome length normalization will be performed\n";
     }
   }
-  it++;
+  ++it;
 
-  for (; it != chrCopyNumber_.end(); it++) {
+  for (; it != chrCopyNumber_.end(); ++it) {
     cout << "..processing chromosome " << it->getChromosome() << "\n";
     int result = it->calculateBAFBreakpoints(breakPointThreshold,
                                              firstChromLen,
@@ -521,7 +521,7 @@ void GenomeCopyNumber::recalculateRatio(float contamination) {
   }
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if ((sex_.compare("XY") == 0) &&
         ((it->getChromosome().find("X") != string::npos) ||
          (it->getChromosome().find("Y") != string::npos))) {
@@ -549,7 +549,7 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
 
   double around[MAXDEGREE + 2];
 
-  for (int i = 0; i < npoints; i++) {
+  for (int i = 0; i < npoints; ++i) {
     around[i] = minExpectedGC + (maxExpectedGC - minExpectedGC) / (npoints - 1) *
                 i; // 0.55-0.35
   }                // for degree = 3 one will get : { 0.35, 0.40, 0.45, 0.5,
@@ -558,14 +558,14 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
 
   double yValues[MAXDEGREE + 2];
 
-  for (int i = 0; i < npoints; i++) yValues[i] = calculateMedianRatioAround(
+  for (int i = 0; i < npoints; ++i) yValues[i] = calculateMedianRatioAround(
       interval,
       float(around[i]));
   int nvars = degree; // fit by cubic polynomial
   ap::real_2d_array xy;
   xy.setlength(npoints, nvars + 1);
 
-  for (int i = 0; i < npoints; i++) {
+  for (int i = 0; i < npoints; ++i) {
     xy(i, degree)     = yValues[i];
     xy(i, degree - 1) = around[i];
 
@@ -598,7 +598,7 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
   // cout << v(0) << "\t" << v(1)<< "\t" <<v(2)<< "\t" <<v(3)<< "\n";
   double a[MAXDEGREE + 1];
 
-  for (int i = 0; i < degree; i++) {
+  for (int i = 0; i < degree; ++i) {
     a[i] = v(i);
   } /* this is equal to
        double a0 = v(0);
@@ -615,12 +615,12 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
   // fill x and y:
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       // use a threshold, but correct using notN profile
       if (it->getMappabilityLength() > 0) {
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if ((it->getRatioAtBin(i) > 0) &&
               (it->getMappabilityProfileAt(i) > minMappabilityPerWindow)) {
             x.push_back(it->getCGprofileAt(i));
@@ -628,7 +628,7 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
           }
         }
       } else {
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if ((it->getRatioAtBin(i) > 0) &&
               (it->getNotNprofileAt(i) > minMappabilityPerWindow)) {
             x.push_back(it->getCGprofileAt(i));
@@ -667,13 +667,13 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
   if (degree > 3) {
     cout << "Y = ";
 
-    for (int i = 0; i < degree; i++) {
+    for (int i = 0; i < degree; ++i) {
       cout << a[i] << "*x^" <<  degree - i << "+";
     }
     cout << a[degree] << "\n";
   }
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->recalculateRatio(a, degree);
   }
 }
@@ -681,7 +681,7 @@ void GenomeCopyNumber::recalculateRatioUsingCG(int   degree,
 void GenomeCopyNumber::setAllNormal() {
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->setAllNormal();
   }
 }
@@ -714,7 +714,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
   vector<ChrCopyNumber>::iterator it;
   int countAutosomes = 0;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       countAutosomes++;
@@ -722,7 +722,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
   }
 
   // fill x and y:
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if ((countAutosomes > 0) &&
         !((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos)) ||
@@ -730,7 +730,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
       // if uniqueMatch, do correction to mappability
       if (uniqueMatch) {
         // use mappabilityProfile_ and correct
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if ((it->getValueAt(i) > 0) &&
               (it->getMappabilityProfileAt(i) > minMappabilityPerWindow)) {
             x.push_back(it->getCGprofileAt(i));
@@ -740,7 +740,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
       } else {
         // use a threshold, but correct using notN profile
         if (it->getMappabilityLength() > 0) {
-          for (int i = 0; i < it->getLength(); i++) {
+          for (int i = 0; i < it->getLength(); ++i) {
             if ((it->getValueAt(i) > 0) &&
                 (it->getMappabilityProfileAt(i) > minMappabilityPerWindow)) {
               x.push_back(it->getCGprofileAt(i));
@@ -748,7 +748,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
             }
           }
         } else {
-          for (int i = 0; i < it->getLength(); i++) {
+          for (int i = 0; i < it->getLength(); ++i) {
             if ((it->getValueAt(i) > 0) &&
                 (it->getNotNprofileAt(i) > minMappabilityPerWindow)) {
               x.push_back(it->getCGprofileAt(i));
@@ -773,7 +773,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
 
     double around[MAXDEGREE + 2];
 
-    for (int i = 0; i < npoints; i++) {
+    for (int i = 0; i < npoints; ++i) {
       around[i] = minExpectedGC + (maxExpectedGC - minExpectedGC) /
                   (npoints - 1) * i; // 0.55-0.35
     }                                // for degree = 3 one will get : { 0.35,
@@ -783,7 +783,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
 
     double yValues[MAXDEGREE + 2];
 
-    for (int i = 0; i < npoints; i++) yValues[i] = calculateMedianAround(interval,
+    for (int i = 0; i < npoints; ++i) yValues[i] = calculateMedianAround(interval,
                                                                          float(
                                                                            around[
                                                                              i]));
@@ -791,7 +791,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
     ap::real_2d_array xy;
     xy.setlength(npoints, nvars + 1);
 
-    for (int i = 0; i < npoints; i++) {
+    for (int i = 0; i < npoints; ++i) {
       xy(i, degree)     = yValues[i];
       xy(i, degree - 1) = around[i];
 
@@ -824,7 +824,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
     // cout << v(0) << "\t" << v(1)<< "\t" <<v(2)<< "\t" <<v(3)<< "\n";
     double a[MAXDEGREE + 1];
 
-    for (int i = 0; i < degree; i++) {
+    for (int i = 0; i < degree; ++i) {
       a[i] = v(i);
     } /* this is equal to
          double a0 = v(0);
@@ -874,7 +874,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
 
   double around[MAXDEGREE + 2];
 
-  for (int i = 0; i < npoints; i++) {
+  for (int i = 0; i < npoints; ++i) {
     around[i] = minExpectedGC + (maxExpectedGC - minExpectedGC) / (npoints - 1) *
                 i; // 0.55-0.35
   }                // for degree = 3 one will get : { 0.35, 0.40, 0.45, 0.5,
@@ -883,14 +883,14 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
 
   double yValues[MAXDEGREE + 2];
 
-  for (int i = 0; i < npoints; i++) yValues[i] = calculateMedianAround(interval,
+  for (int i = 0; i < npoints; ++i) yValues[i] = calculateMedianAround(interval,
                                                                        float(
                                                                          around[i]));
   int nvars = degree; // fit by cubic polynomial
   ap::real_2d_array xy;
   xy.setlength(npoints, nvars + 1);
 
-  for (int i = 0; i < npoints; i++) {
+  for (int i = 0; i < npoints; ++i) {
     xy(i, degree)     = yValues[i];
     xy(i, degree - 1) = around[i];
 
@@ -923,7 +923,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
   // cout << v(0) << "\t" << v(1)<< "\t" <<v(2)<< "\t" <<v(3)<< "\n";
   double a[MAXDEGREE + 1];
 
-  for (int i = 0; i < degree; i++) {
+  for (int i = 0; i < degree; ++i) {
     a[i] = v(i);
   } /* this is equal to
        double a0 = v(0);
@@ -964,14 +964,14 @@ int GenomeCopyNumber::calculateRatioUsingCG(bool  intercept,
   if (degree > 3) {
     cout << "Y = ";
 
-    for (int i = 0; i < degree; i++) {
+    for (int i = 0; i < degree; ++i) {
       cout << a[i] << "*x^" <<  degree - i << "+";
     }
     cout << a[degree] << "\n";
   }
 
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->calculateRatio(a, degree);
   }
   x.clear();
@@ -999,7 +999,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
 
   double around[MAXDEGREE + 2];
 
-  for (int i = 0; i < npoints; i++) {
+  for (int i = 0; i < npoints; ++i) {
     around[i] = minExpectedGC + (maxExpectedGC - minExpectedGC) / (npoints - 1) *
                 i; // 0.55-0.35
   }                // for degree = 3 one will get : { 0.35, 0.40, 0.45, 0.5,
@@ -1008,14 +1008,14 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
 
   double yValues[MAXDEGREE + 2];
 
-  for (int i = 0; i < npoints; i++) yValues[i] = calculateMedianAround(interval,
+  for (int i = 0; i < npoints; ++i) yValues[i] = calculateMedianAround(interval,
                                                                        float(
                                                                          around[i]));
   int nvars = degree; // fit by cubic polynomial
   ap::real_2d_array xy;
   xy.setlength(npoints, nvars + 1);
 
-  for (int i = 0; i < npoints; i++) {
+  for (int i = 0; i < npoints; ++i) {
     xy(i, degree)     = yValues[i];
     xy(i, degree - 1) = around[i];
 
@@ -1048,7 +1048,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
   // cout << v(0) << "\t" << v(1)<< "\t" <<v(2)<< "\t" <<v(3)<< "\n";
   double a[MAXDEGREE + 1];
 
-  for (int i = 0; i < degree; i++) {
+  for (int i = 0; i < degree; ++i) {
     a[i] = v(i);
   } /* this is equal to
        double a0 = v(0);
@@ -1065,13 +1065,13 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
   // fill x and y:
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       // if uniqueMatch, do correction to mappability
       if (uniqueMatch) {
         // use mappabilityProfile_ and correct
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if ((it->getValueAt(i) > 0) &&
               (it->getMappabilityProfileAt(i) > minMappabilityPerWindow)) {
             x.push_back(it->getCGprofileAt(i));
@@ -1081,7 +1081,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
       } else {
         // use a threshold, but correct using notN profile
         if (it->getMappabilityLength() > 0) {
-          for (int i = 0; i < it->getLength(); i++) {
+          for (int i = 0; i < it->getLength(); ++i) {
             if ((it->getValueAt(i) > 0) &&
                 (it->getMappabilityProfileAt(i) > minMappabilityPerWindow)) {
               x.push_back(it->getCGprofileAt(i));
@@ -1089,7 +1089,7 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
             }
           }
         } else {
-          for (int i = 0; i < it->getLength(); i++) {
+          for (int i = 0; i < it->getLength(); ++i) {
             if ((it->getValueAt(i) > 0) &&
                 (it->getNotNprofileAt(i) > minMappabilityPerWindow)) {
               x.push_back(it->getCGprofileAt(i));
@@ -1133,14 +1133,14 @@ int GenomeCopyNumber::calculateRatioUsingCG(int   degree,
   if (degree > 3) {
     cout << "Y = ";
 
-    for (int i = 0; i < degree; i++) {
+    for (int i = 0; i < degree; ++i) {
       cout << a[i] << "*x^" <<  degree - i << "+";
     }
     cout << a[degree] << "\n";
   }
 
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->calculateRatio(a, degree);
   }
   x.clear();
@@ -1153,7 +1153,7 @@ void GenomeCopyNumber::setPloidy(int ploidy) {
   vector<ChrCopyNumber>::iterator it;
 
   for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end();
-       it++) it->setPloidy(ploidy);
+       ++it) it->setPloidy(ploidy);
 }
 
 double GenomeCopyNumber::calculateMedianRatioAround(float interval,
@@ -1164,10 +1164,10 @@ double GenomeCopyNumber::calculateMedianRatioAround(float interval,
   vector<float> myValuesAround;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos)))
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if ((it->getCGprofileAt(i) <= maxCG) && (it->getCGprofileAt(i) >= minCG))
           if (it->getRatioAtBin(i) > 0) // non-zero values
             myValuesAround.push_back(it->getRatioAtBin(i));
@@ -1190,10 +1190,10 @@ int GenomeCopyNumber::calculateSDReadCountPerWindow(int mean) {
   vector<float> myValues;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos)))
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if (it->getValueAt(i) > 0) // non-zero values
           myValues.push_back(it->getValueAt(i));
       }
@@ -1214,10 +1214,10 @@ int GenomeCopyNumber::calculateMedianReadCountPerWindow() {
   vector<float> myValues;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos)))
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if (it->getValueAt(i) > 0) // non-zero values
           myValues.push_back(it->getValueAt(i));
       }
@@ -1244,7 +1244,7 @@ double GenomeCopyNumber::calculateMedianAround(float interval, float around) {
 
   int countAutosomes = 0;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       countAutosomes++;
@@ -1252,12 +1252,12 @@ double GenomeCopyNumber::calculateMedianAround(float interval, float around) {
   }
 
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if ((countAutosomes > 0) &&
         !((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos)) ||
         (countAutosomes == 0))
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if ((it->getCGprofileAt(i) <= maxCG) && (it->getCGprofileAt(i) >= minCG))
           if (it->getValueAt(i) > 0) // non-zero values
             myValuesAround.push_back(it->getValueAt(i));
@@ -1272,10 +1272,10 @@ double GenomeCopyNumber::calculateMedianAround(float interval, float around) {
     maxCG    = around + interval;
     minCG    = around - interval;
 
-    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
       if (!((it->getChromosome().find("X") != string::npos) ||
             (it->getChromosome().find("Y") != string::npos)))
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if ((it->getCGprofileAt(i) <= maxCG) &&
               (it->getCGprofileAt(i) >= minCG))
             if (it->getValueAt(i) > 0) // non-zero values
@@ -1307,7 +1307,7 @@ double GenomeCopyNumber::calculateMedianAround(
   vector<float> myValuesAround;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       vector<float> controlcounts = controlCopyNumber.getChrCopyNumber(
@@ -1318,7 +1318,7 @@ double GenomeCopyNumber::calculateMedianAround(
         cerr << "Possible Error: calculateMedianAround ()\n";
       }
 
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         float controlValue = controlcounts[i];
 
         if ((controlValue <= maxVal) &&
@@ -1350,7 +1350,7 @@ void GenomeCopyNumber::removeLowReadCountWindows(
     RCThresh << "\n";
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->removeLowReadCountWindows(controlCopyNumber.getChrCopyNumber(it->
                                                                      getChromosome()),
                                   RCThresh);
@@ -1363,7 +1363,7 @@ void GenomeCopyNumber::removeLowReadCountWindowsFromControl(int RCThresh) {
        << RCThresh << "\n";
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->removeLowReadCountWindows(RCThresh);
   }
 }
@@ -1385,7 +1385,7 @@ long double GenomeCopyNumber::calculateRSS(int ploidy)
   vector<float> expectedvalues;
   map<string, int>::iterator it;
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     string chrNumber = (*it).first;
 
     if ((pos = chrNumber.find("chr")) != string::npos) chrNumber.replace(pos,
@@ -1400,7 +1400,7 @@ long double GenomeCopyNumber::calculateRSS(int ploidy)
     int index  = findIndex(chrNumber);
     int length = chrCopyNumber_[index].getLength();
 
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length; ++i) {
       float observed = chrCopyNumber_[index].getRatioAtBin(i);
 
       if (observed != NA) {
@@ -1423,7 +1423,7 @@ long double GenomeCopyNumber::calculateRSS(int ploidy)
 
   long double RSS = 0;
 
-  for (int i = 0; i < (int)observedvalues.size(); i++)
+  for (int i = 0; i < (int)observedvalues.size(); ++i)
   {
     if ((observedvalues[i] != NA) && (expectedvalues[i] != NA))
     {
@@ -1446,7 +1446,7 @@ void GenomeCopyNumber::calculateRatioUsingCG(GenomeCopyNumber& controlCopyNumber
   // since the raio should be already normalized, just devide sample/control
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if ((sex_.compare("XY") == 0) &&
         ((it->getChromosome().find("X") != string::npos) ||
          (it->getChromosome().find("Y") != string::npos))) {
@@ -1487,7 +1487,7 @@ void GenomeCopyNumber::calculateRatioUsingCG_Regression(
   // fill x and y:
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       vector<float> controlcounts = controlCopyNumber.getChrCopyNumber(
@@ -1498,7 +1498,7 @@ void GenomeCopyNumber::calculateRatioUsingCG_Regression(
         cerr << "Possible Error: calculateMedianAround ()\n";
       }
 
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if ((it->getRatioAtBin(i) > 0) && (controlcounts[i] > 0)) {
           x.push_back(controlcounts[i]);
           y.push_back(it->getRatioAtBin(i));
@@ -1515,7 +1515,7 @@ void GenomeCopyNumber::calculateRatioUsingCG_Regression(
     std::ofstream file;
     file.open(nametmp);
 
-    for (unsigned int i = 0; i < x.size(); i++) {
+    for (unsigned int i = 0; i < x.size(); ++i) {
       file << positions[i] << "\t" << x[i] << "\t" << y[i] << "\n";
     }
     file.close();
@@ -1542,12 +1542,12 @@ void GenomeCopyNumber::calculateRatioUsingCG_Regression(
   // devide sample/control with the identified constant that should not be too
   // far away from 1:
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->recalculateRatio(controlCopyNumber.getChrCopyNumber(it->getChromosome()));
     it->recalculateRatio(a[0]);
   }
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if ((sex_.compare("XY") == 0) &&
         ((it->getChromosome().find("X") != string::npos) ||
          (it->getChromosome().find("Y") != string::npos))) {
@@ -1564,7 +1564,7 @@ int GenomeCopyNumber::fillInRatio() {
   vector<float> countValues;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if ((sex_.compare("XY") == 0) &&
         ((it->getChromosome().find("X") != string::npos) ||
          (it->getChromosome().find("Y") != string::npos))) {
@@ -1574,7 +1574,7 @@ int GenomeCopyNumber::fillInRatio() {
     } else {
       it->fillInRatio(isRatioLogged_);
 
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if (it->getValueAt(i) > 0) {
           countValues.push_back(it->getRatioAtBin(i));
         }
@@ -1583,7 +1583,7 @@ int GenomeCopyNumber::fillInRatio() {
   }
   float median = get_medianNotNA(countValues);
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!isRatioLogged_) {
       it->recalculateRatio(median);
     } else {
@@ -1610,7 +1610,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     // fill x and y:
     vector<ChrCopyNumber>::iterator it;
 
-    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
       if (!((it->getChromosome().find("X") != string::npos) ||
             (it->getChromosome().find("Y") != string::npos))) {
         vector<float> controlcounts = controlCopyNumber.getChrCopyNumber(
@@ -1621,7 +1621,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
           cerr << "Possible Error: calculateMedianAround ()\n";
         }
 
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if ((it->getValueAt(i) > 0) && (controlcounts[i] > 0)) {
             x.push_back(log(controlcounts[i]));
             y.push_back(log(it->getValueAt(i)));
@@ -1638,7 +1638,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     xy.setlength(npoints, nvars + 1);
     int pos = 0;
 
-    for (int i = 0; i < (int)x.size(); i++) {
+    for (int i = 0; i < (int)x.size(); ++i) {
       xy(pos, degree)     = y[i];
       xy(pos, degree - 1) = x[i];
 
@@ -1662,7 +1662,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     lrunpack(lm, v, nvars);
     double a[MAXDEGREE + 1];
 
-    for (int i = 0; i < degree; i++) {
+    for (int i = 0; i < degree; ++i) {
       a[i] = v(i);
     }
 
@@ -1676,7 +1676,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     if (degree > 1) {
       cout << "log(Y) = ";
 
-      for (int i = 0; i < degree; i++) {
+      for (int i = 0; i < degree; ++i) {
         cout << a[i] << "*log(x)^" <<  degree - i << "+";
       }
       cout << a[degree] << "\n";
@@ -1709,13 +1709,13 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     if (degree > 1) {
       cout << "log(Y) = ";
 
-      for (int i = 0; i < degree; i++) {
+      for (int i = 0; i < degree; ++i) {
         cout << a[i] << "*log(x)^" <<  degree - i << "+";
       }
       cout << a[degree] << "\n";
     }
 
-    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
       if ((sex_.compare("XY") == 0) &&
           ((it->getChromosome().find("X") != string::npos) ||
            (it->getChromosome().find("Y") != string::npos))) {
@@ -1756,7 +1756,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     double minVal = lquar;
     double maxVal = uquar;
 
-    for (int i = 0; i < npoints; i++) {
+    for (int i = 0; i < npoints; ++i) {
       around[i] = minVal + (maxVal - minVal) / (npoints - 1) * i;
     }
 
@@ -1788,7 +1788,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
         (int)floor(medianReadCountPerWindowForControl +
                    sqrt(medianReadCountPerWindowForControl)));
 
-      for (int i = 0; i < npoints; i++) {
+      for (int i = 0; i < npoints; ++i) {
         around[i] = minVal + (maxVal - minVal) / (npoints - 1) * i;
       }
       interval          = (maxVal - minVal) / (npoints - 1) / 2;
@@ -1811,7 +1811,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
 
     double yValues[MAXDEGREE + 2];
 
-    for (int i = 0; i < npoints; i++) yValues[i] = calculateMedianAround(
+    for (int i = 0; i < npoints; ++i) yValues[i] = calculateMedianAround(
         controlCopyNumber,
         interval,
         float(around[i]));
@@ -1819,7 +1819,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     ap::real_2d_array xy;
     xy.setlength(npoints, nvars + 1);
 
-    for (int i = 0; i < npoints; i++) {
+    for (int i = 0; i < npoints; ++i) {
       xy(i, degree - 1) = around[i];
       xy(i, degree)     = yValues[i];
 
@@ -1846,7 +1846,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     // cout << v(0) << "\t" << v(1)<< "\t" <<v(2)<< "\t" <<v(3)<< "\n";
     double a[MAXDEGREE + 1];
 
-    for (int i = 0; i < degree; i++) {
+    for (int i = 0; i < degree; ++i) {
       a[i] = v(i);
     }
 
@@ -1868,7 +1868,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     if (degree > 3) {
       cout << "Y = ";
 
-      for (int i = 0; i < degree; i++) {
+      for (int i = 0; i < degree; ++i) {
         cout << a[i] << "*x^" <<  degree - i << "+";
       }
       cout << a[degree] << "\n";
@@ -1877,7 +1877,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     // fill x and y:
     vector<ChrCopyNumber>::iterator it;
 
-    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
       if (!((it->getChromosome().find("X") != string::npos) ||
             (it->getChromosome().find("Y") != string::npos))) {
         vector<float> controlcounts = controlCopyNumber.getChrCopyNumber(
@@ -1888,7 +1888,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
           cerr << "Possible Error: calculateMedianAround ()\n";
         }
 
-        for (int i = 0; i < it->getLength(); i++) {
+        for (int i = 0; i < it->getLength(); ++i) {
           if (it->getValueAt(i) > 0) {
             x.push_back(controlcounts[i]);
             y.push_back(it->getValueAt(i));
@@ -1902,7 +1902,7 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     // "/bioinfo/users/vboeva/Desktop/TMP/Lena/patientT/xy.txt";
     // std::ofstream file;
     // file.open(nametmp);
-    // for ( int i=0 ;i<x.size(); i++ ) {
+    // for ( int i=0 ;i<x.size(); ++i ) {
     //	 file << x[i] <<"\t" << y[i] <<"\n" ;
     // }
     // file.close(); exit(0);
@@ -1939,13 +1939,13 @@ int GenomeCopyNumber::calculateRatio(GenomeCopyNumber& controlCopyNumber,
     if (degree > 3) {
       cout << "Y = ";
 
-      for (int i = 0; i < degree; i++) {
+      for (int i = 0; i < degree; ++i) {
         cout << a[i] << "*x^" <<  degree - i << "+";
       }
       cout << a[degree] << "\n";
     }
 
-    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+    for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
       if ((sex_.compare("XY") == 0) &&
           ((it->getChromosome().find("X") != string::npos) ||
            (it->getChromosome().find("Y") != string::npos))) {
@@ -1971,10 +1971,10 @@ void GenomeCopyNumber::calculateReadCountQuartiles(int& lower, int& upper) {
   vector<float> myValues;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos)))
-      for (int i = 0; i < it->getLength(); i++) {
+      for (int i = 0; i < it->getLength(); ++i) {
         if (it->getValueAt(i) > 0) // non-zero values
           myValues.push_back(it->getValueAt(i));
       }
@@ -1995,10 +1995,10 @@ float GenomeCopyNumber::getMedianRatio() {
   vector<float> selectedValues;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     vector<float> chr_values = it->getRatio();
 
-    for (int i = 0; i < (int)chr_values.size(); i++)
+    for (int i = 0; i < (int)chr_values.size(); ++i)
       if (chr_values[i] != NA) selectedValues.push_back(chr_values[i]);
       else cout << chr_values[i] << "\n";
   }
@@ -2020,10 +2020,10 @@ float GenomeCopyNumber::getMedianCopyNumber() {
   vector<float> selectedValues;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     vector<float> chr_values = it->getValues();
 
-    for (int i = 0; i < (int)chr_values.size(); i++)
+    for (int i = 0; i < (int)chr_values.size(); ++i)
       // if (chr_values[i]!=0)
       selectedValues.push_back(chr_values[i]);
   }
@@ -2066,7 +2066,7 @@ void GenomeCopyNumber::printRatio(std::string const& outFile,
     }
     file << "\n";
 
-    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
       printRatio((*it).first, file, printNA);
     }
   } else {
@@ -2075,26 +2075,26 @@ void GenomeCopyNumber::printRatio(std::string const& outFile,
       file << "track type=bedGraph name=\"copy neutral LOH from " << outFile <<
         "\" description=\"Copy Neutral LOH\" color=100,100,100\n";
 
-      for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+      for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
         printRatioBedGraph((*it).first, file, "LOH");
       }
     }
     file << "track type=bedGraph name=\"gains from " << outFile <<
       "\" description=\"Gains\" color=255,40,20\n";
 
-    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
       printRatioBedGraph((*it).first, file, "gain");
     }
     file << "track type=bedGraph name=\"losses from " << outFile <<
       "\" description=\"Losses\" color=20,40,255\n";
 
-    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
       printRatioBedGraph((*it).first, file, "loss");
     }
     file << "track type=bedGraph name=\"neutral copy number from " << outFile <<
       "\" description=\"Neutral Copy Number\" color=20,255,40\n";
 
-    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+    for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
       printRatioBedGraph((*it).first, file, "normal");
     }
   }
@@ -2112,7 +2112,7 @@ void GenomeCopyNumber::printBAF(std::string const& outFile,
   file << "Chromosome\tPosition\tBAF\tFittedA\tFittedB\tA\tB\tuncertainty";
   file << "\n";
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     string chrNumber = (*it).first;
 
     int indexSNP = snpingenome.findIndex(chrNumber);
@@ -2132,7 +2132,7 @@ void GenomeCopyNumber::deleteFlanks(int telo_centromeric_flanks) {
   telo_centromeric_flanks_ = telo_centromeric_flanks;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->deleteFlanks(telo_centromeric_flanks);
   }
 }
@@ -2142,7 +2142,7 @@ void GenomeCopyNumber::recalcFlanks(int telo_centromeric_flanks,
   telo_centromeric_flanks_ = telo_centromeric_flanks;
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->recalcFlanks(telo_centromeric_flanks, minNumberOfWindows);
   }
 }
@@ -2169,7 +2169,7 @@ void GenomeCopyNumber::calculateCopyNumberProbs_and_exomeLength(int breakPointTy
   CNVs_.clear();
   copyNumberProbs_.clear();
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++)
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it)
   {
     float previousLevel         = NA;
     int   lengthOfPreviousLevel = 0;
@@ -2199,7 +2199,7 @@ void GenomeCopyNumber::calculateCopyNumberProbs_and_exomeLength(int breakPointTy
       normalLevel = 0.5;
     }
 
-    for (int i = 0; i < (int)it->getMedianValues().size(); i++) {
+    for (int i = 0; i < (int)it->getMedianValues().size(); ++i) {
       float level          = it->getLevelAt(i, ploidy_);
       int   fragmentLength =  it->getFragmentLengths()[i];
 
@@ -2669,7 +2669,7 @@ void GenomeCopyNumber::calculateCopyNumberProbs_and_exomeLength(int breakPointTy
   }
   map<int, double>::iterator it2;
 
-  for (it2 = copyNumberProbs_.begin(); it2 != copyNumberProbs_.end(); it2++) {
+  for (it2 = copyNumberProbs_.begin(); it2 != copyNumberProbs_.end(); ++it2) {
     if ((*it2).first > 0) {
       cout << (*it2).first << "\t" << (*it2).second / count << "\n";
     }
@@ -2704,7 +2704,7 @@ void GenomeCopyNumber::calculateCopyNumberProbs_and_genomeLength(
   for (itProb = copyNumberProbs_.begin(); itProb != copyNumberProbs_.end();
        itProb++) cout << (*itProb).first << " => " << (*itProb).second << "\n";
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     float previousLevel         = NA;
     int   lengthOfPreviousLevel = 0;
     float nextLevel             = NA;
@@ -2733,7 +2733,7 @@ void GenomeCopyNumber::calculateCopyNumberProbs_and_genomeLength(
       normalLevel = 0.5;
     }
 
-    for (int i = 0; i < (int)it->getMedianValues().size(); i++) {
+    for (int i = 0; i < (int)it->getMedianValues().size(); ++i) {
       float level          = it->getLevelAt(i, ploidy_);
       int   fragmentLength =  it->getFragmentLengths()[i];
 
@@ -3216,7 +3216,7 @@ void GenomeCopyNumber::calculateCopyNumberProbs_and_genomeLength(
   }
   map<int, double>::iterator it2;
 
-  for (it2 = copyNumberProbs_.begin(); it2 != copyNumberProbs_.end(); it2++) {
+  for (it2 = copyNumberProbs_.begin(); it2 != copyNumberProbs_.end(); ++it2) {
     if ((*it2).first > 0) {
       cout << (*it2).first << "\t" << (*it2).second / count << "\n";
     }
@@ -3530,7 +3530,7 @@ void GenomeCopyNumber::readCopyNumber(std::string const& inFile) {
       // fill other values
       map<string, int>::iterator it;
 
-      for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+      for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
         chrCopyNumber_[(*it).second].setWindowSize(windowSize_);
         int length = chrCopyNumber_[(*it).second].getValues().size();
         chrCopyNumber_[(*it).second].setVectorLength(length);
@@ -3617,7 +3617,7 @@ void GenomeCopyNumber::readCopyNumber(std::string const& inFile) {
       // fill other values
       map<string, int>::iterator it;
 
-      for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+      for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
         chrCopyNumber_[(*it).second].setWindowSize(windowSize_);
         int length = chrCopyNumber_[(*it).second].getValues().size();
         chrCopyNumber_[(*it).second].setVectorLength(length);
@@ -3664,7 +3664,7 @@ void GenomeCopyNumber::printCopyNumber(std::string const& outFile) {
   file.open(name);
   map<string, int>::iterator it;
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     printCopyNumber((*it).first, file);
   }
   file.close();
@@ -3678,7 +3678,7 @@ void GenomeCopyNumber::printCGprofile(std::string const& outFile) {
   file.open(name);
   map<string, int>::iterator it;
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     printCGprofile((*it).first, file);
   }
   file.close();
@@ -3710,7 +3710,7 @@ void GenomeCopyNumber::printInfo(std::ofstream& file) {
 void GenomeCopyNumber::printCNVs(std::string const& outFile) {
   std::ofstream file(outFile.c_str());
 
-  for (int i = 0; i < (int)CNVs_.size(); i++) {
+  for (int i = 0; i < (int)CNVs_.size(); ++i) {
     if (CNVs_[i].getCopyNumber() > -1) {
       if ((sex_.compare("XY") == 0) &&
           ((CNVs_[i].getChr().find("X") != string::npos) ||
@@ -3742,7 +3742,7 @@ void GenomeCopyNumber::calculateSomaticCNVs(std::vector<EntryCNV>controlCNVs,
 
   std::cout << "..Calculate somatic CNVs" << std::endl;
 
-  for (int i = 0; i < (int)CNVs_.size(); i++) {
+  for (int i = 0; i < (int)CNVs_.size(); ++i) {
     string type = "somatic";
     vector<int> lefts;
     vector<int> rights;
@@ -3821,7 +3821,7 @@ void GenomeCopyNumber::printRatioBedGraph(std::string const& chr,
                     return; }
   }
 
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < length; ++i) {
     value = chrCopyNumber_[index].getRatioAtBin(i);
 
     if (isRatioLogged_ && (value != NA)) value = pow(2, value);
@@ -3886,7 +3886,7 @@ void GenomeCopyNumber::printRatio(std::string const& chr,
   int length = chrCopyNumber_[index].getLength();
 
   // cout <<length<<" == "<<chrCopyNumber_[index].getValues().size() <<"\n";
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < length; ++i) {
     float ratioToPrint = chrCopyNumber_[index].getRatioAtBin(i);
 
     if (isRatioLogged_ && (ratioToPrint != NA)) {
@@ -3967,7 +3967,7 @@ void GenomeCopyNumber::printBAF(std::string const& chr,
 
   if (index == NA) return; int length = snpAtChrom.getSize();
 
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < length; ++i) {
     if ((snpAtChrom.getStatusAt(i) != 0) && (snpAtChrom.getValueAt(i) >= 0)) {
       int position = snpAtChrom.getPositionAt(i);
 
@@ -4019,14 +4019,14 @@ void GenomeCopyNumber::printBAF(std::string const& chr,
         int i = 0;
         while (line[i] != '\t')
             {
-            i++;
+            ++i;
             }
-        i++;
+        ++i;
         string snp_pos;
         while (line[i] != '\t')
             {
             snp_pos += line[i];
-            i++;
+            ++i;
             }
         if (atoi(snp_pos.c_str()) >= position)
             {
@@ -4053,14 +4053,14 @@ void GenomeCopyNumber::printCGprofile(std::string const& chr,
 
   if (chrCopyNumber_[index].getMappabilityLength() > 0)
     for (int i = 0; i < length;
-         i++) file << chrNumber << "\t" <<
+         ++i) file << chrNumber << "\t" <<
         chrCopyNumber_[index].getCoordinateAtBin(i) << "\t" <<
         chrCopyNumber_[index].getCGprofileAt(i) << "\t" <<
         chrCopyNumber_[index].getNotNprofileAt(i) << "\t" <<
         chrCopyNumber_[index].getMappabilityProfileAt(i) << "\n";
   else
     for (int i = 0; i < length;
-         i++) file << chrNumber << "\t" <<
+         ++i) file << chrNumber << "\t" <<
         chrCopyNumber_[index].getCoordinateAtBin(i) << "\t" <<
         chrCopyNumber_[index].getCGprofileAt(i) << "\t" <<
         chrCopyNumber_[index].getNotNprofileAt(i) << "\n";
@@ -4082,7 +4082,7 @@ void GenomeCopyNumber::printCopyNumber(std::string const& chr,
   if (WESanalysis != false)
   {
     for (int i = 0; i < length;
-         i++) file << chrNumber << "\t" <<
+         ++i) file << chrNumber << "\t" <<
         chrCopyNumber_[index].getCoordinateAtBin(i) << "\t" <<
         chrCopyNumber_[index].getEndAtBin(i) << "\t" <<
         chrCopyNumber_[index].getValueAt(i) << "\t" <<
@@ -4091,12 +4091,12 @@ void GenomeCopyNumber::printCopyNumber(std::string const& chr,
   else {
     if (windowSize_ == step_) {
       for (int i = 0; i < length;
-           i++) file << chrNumber << "\t" <<
+           ++i) file << chrNumber << "\t" <<
           chrCopyNumber_[index].getCoordinateAtBin(i) << "\t" <<
           chrCopyNumber_[index].getValueAt(i) << "\n";
     } else {
       for (int i = 0; i < length;
-           i++) file << chrNumber << "\t" <<
+           ++i) file << chrNumber << "\t" <<
           chrCopyNumber_[index].getCoordinateAtBin(i) << "\t" <<
           chrCopyNumber_[index].getEndAtBin(i) << "\t" <<
           chrCopyNumber_[index].getValueAt(i) << "\n";
@@ -4110,7 +4110,7 @@ void GenomeCopyNumber::calculateCopyNumberMedians(int  minCNAlength,
   cout << "..calculating medians for copy numbers\n";
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     cout << "..calculating medians for " << it->getChromosome() << "\n";
     it->calculateCopyNumberMedian(ploidy_,
                                   minCNAlength,
@@ -4132,7 +4132,7 @@ void GenomeCopyNumber::calculatePloidy(int minCNAlength) {
   int ploidy[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
   vector<double> scores;
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 6; ++i) {
     scores.push_back(calculateXiSum(ploidy[i]));
   }
   int i = argmin(scores);
@@ -4152,7 +4152,7 @@ double GenomeCopyNumber::calculateXiSum(int ploidy) {
   vector<ChrCopyNumber>::iterator it;
   cout << "..Calculating sum of squares for ploidy = " << ploidy << "\n";
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     // cout << "..processing chromosome " <<it->getChromosome()<<"\n";
     totalNumberOfBP += it->getNumberOfGoodFragments();
 
@@ -4177,8 +4177,8 @@ void GenomeCopyNumber::calculateSDAndMed(int ploidy, map<float, float>& sds,
   // fill the map
   map<float, vector<float> > mymap;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
-    for (int i = 0; i < it->getLength(); i++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
+    for (int i = 0; i < it->getLength(); ++i) {
       med = it->getMedianProfileAtI(i);
       float level = round_by_ploidy(med, ploidy);
       value = it->getRatioAtBin(i);
@@ -4198,7 +4198,7 @@ void GenomeCopyNumber::calculateSDAndMed(int ploidy, map<float, float>& sds,
   // get median and variance for each level
   map<float, vector<float> >::iterator it2;
 
-  for (it2 = mymap.begin(); it2 != mymap.end(); it2++) {
+  for (it2 = mymap.begin(); it2 != mymap.end(); ++it2) {
     float level  = (*it2).first;
     float median = get_median((*it2).second);
 
@@ -4218,8 +4218,8 @@ void GenomeCopyNumber::calculateSDs(int ploidy, map<float, float>& sds) {
   // fill the map
   map<float, vector<float> > mymap;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
-    for (int i = 0; i < it->getLength(); i++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
+    for (int i = 0; i < it->getLength(); ++i) {
       med = it->getMedianProfileAtI(i);
       float level = round_by_ploidy(med, ploidy);
       value = it->getRatioAtBin(i);
@@ -4239,7 +4239,7 @@ void GenomeCopyNumber::calculateSDs(int ploidy, map<float, float>& sds) {
   // get median and variance for each level
   map<float, vector<float> >::iterator it2;
 
-  for (it2 = mymap.begin(); it2 != mymap.end(); it2++) {
+  for (it2 = mymap.begin(); it2 != mymap.end(); ++it2) {
     float level = (*it2).first;
 
     //	float mean = get_mean((*it2).second);
@@ -4275,9 +4275,9 @@ float GenomeCopyNumber::calculateVarianceForNormalCopy(int ploidy) { // geting
 
   cout << "..Calculating variance for neutral copies\n";
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     // cout << "..processing chromosome " <<it->getChromosome()<<"\n";
-    for (int i = 0; i < it->getLength(); i++) {
+    for (int i = 0; i < it->getLength(); ++i) {
       med = it->getMedianProfileAtI(i);
 
       if ((med > lowBoundary) && (med < highBoundary)) {
@@ -4313,7 +4313,7 @@ void GenomeCopyNumber::fillCGprofile(std::string const& chrFolder) {
   // reading the file with genome information
   vector<ChrCopyNumber>::iterator it;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     it->fillCGprofile(chrFolder);
   }
 }
@@ -4325,7 +4325,7 @@ float GenomeCopyNumber::evaluateContamination() {
   vector<float> weights;
   map<string, int>::iterator it;
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     string chrNumber = (*it).first;
 
     if ((pos = chrNumber.find("chr")) != string::npos) chrNumber.replace(pos,
@@ -4347,7 +4347,7 @@ float GenomeCopyNumber::evaluateContamination() {
     }
     int length = chrCopyNumber_[index].getLength();
 
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length; ++i) {
       float observed = chrCopyNumber_[index].getRatioAtBin(i);
 
       if (observed != NA) {
@@ -4404,7 +4404,7 @@ float GenomeCopyNumber::evaluateContaminationwithLR() {
   vector<float> expected_values;
   map<string, int>::iterator it;
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     string chrNumber = (*it).first;
 
     if ((pos = chrNumber.find("chr")) != string::npos) chrNumber.replace(pos,
@@ -4426,7 +4426,7 @@ float GenomeCopyNumber::evaluateContaminationwithLR() {
     }
     int length = chrCopyNumber_[index].getLength();
 
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length; ++i) {
       float observed = chrCopyNumber_[index].getRatioAtBin(i);
 
       if (observed != NA) {
@@ -4456,7 +4456,7 @@ float GenomeCopyNumber::evaluateContaminationwithLR() {
   float sum_y2 = 0;
   float sum_xy = 0;
 
-  for (int i = 0; i < n; i++)     {
+  for (int i = 0; i < n; ++i)     {
     sum_x  += x[i];
     sum_y  += y[i];
     sum_x2 += x[i] * x[i];
@@ -4508,7 +4508,7 @@ void GenomeCopyNumber::addBAFinfo(SNPinGenome& snpingenome) {
 
   hasBAF_ = true;
 
-  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); it++) {
+  for (it = chromosomesInd_.begin(); it != chromosomesInd_.end(); ++it) {
     string chrNumber = (*it).first;
 
     if ((pos = chrNumber.find("chr", pos)) != string::npos) chrNumber.replace(pos,
@@ -4545,7 +4545,7 @@ void GenomeCopyNumber::addBAFinfo(SNPinGenome& snpingenome) {
     //		int getSNPpos =
     // snpingenome.SNP_atChr(indexSNP).getPositionAt(SNPcount);
     //        float minBAF;
-    //		for (int i = 0; i<length; i++) {
+    //		for (int i = 0; i<length; ++i) {
     //		    int left = chrCopyNumber_[index].getCoordinateAtBin(i);
     //		    int right = chrCopyNumber_[index].getEndAtBin(i);
     //		    if (getSNPpos>=left && getSNPpos <=right) {
@@ -4778,7 +4778,7 @@ void GenomeCopyNumber::addBAFinfo(SNPinGenome& snpingenome) {
                     if (index==NA)
                         valueToReturn=0;
                     else {
-                        for (int i=0; i<valueToReturn; i++)
+                        for (int i=0; i<valueToReturn; ++i)
                             chrCopyNumber_[index].mappedPlusOneAtI(left,step_);
                     }
                             }
@@ -5030,7 +5030,7 @@ int GenomeCopyNumber::processRead(InputFormat     inputFormat,
 
           if (index == NA) valueToReturn = 0;
           else {
-            for (int i = 0; i < valueToReturn; i++)    {
+            for (int i = 0; i < valueToReturn; ++i)    {
               chrCopyNumber_[index].mappedPlusOneAtI(left, step_);
             }
           }
@@ -5070,7 +5070,7 @@ int GenomeCopyNumber::processRead(InputFormat     inputFormat,
             step_ = chrCopyNumber_[index].getEndAtBin(l) -
                     chrCopyNumber_[index].getCoordinateAtBin(l) + read_Size + 1;
 
-            for (int i = 0; i < valueToReturn; i++)    {
+            for (int i = 0; i < valueToReturn; ++i)    {
               chrCopyNumber_[index].mappedPlusOneAtI(left, step_, l);
             }
             step_ = 0;
@@ -5284,15 +5284,15 @@ float GenomeCopyNumber::removeLargeExons(float iqrToKeep) {
   float numberOfRemovedExons = 0;
   vector<float> exonLengths;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
-    for (int i = 0; i < it->getLength(); i++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
+    for (int i = 0; i < it->getLength(); ++i) {
       exonLengths.push_back(it->getEndAtBin(i) - it->getCoordinateAtBin(i));
       totalNumberExons++;
     }
   }
   maxLength = get_iqr(exonLengths) / 2 * iqrToKeep + get_median(exonLengths);
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     numberOfRemovedExons += it->removeLargeExons(maxLength);
   }
   return numberOfRemovedExons / totalNumberExons;
@@ -5377,7 +5377,7 @@ int GenomeCopyNumber::focusOnCapture(std::string const& captureFile) {
       if (RegLength < minRegion) minRegion = RegLength;
       refGenomeSize_ += RegLength;
 
-      for (int i = leftWindow; i <= rightWindow; i++) {
+      for (int i = leftWindow; i <= rightWindow; ++i) {
         mapCount = windowSize_;
 
         if (positionS > i * step_) mapCount -= (positionS - i * step_);
@@ -5402,7 +5402,7 @@ int GenomeCopyNumber::focusOnCapture(std::string const& captureFile) {
 
   cout << "..Total size of captured regions " << refGenomeSize_ << "bp\n";
 
-  for (; it != chrCopyNumber_.end(); it++) {
+  for (; it != chrCopyNumber_.end(); ++it) {
     cout << "..processing chromosome " << it->getChromosome() << "\n";
     it->setRCountToZeroForNNNN();
   }
@@ -5444,7 +5444,7 @@ void GenomeCopyNumber::setSeekSubclones(bool seekSubclones)
   vector<ChrCopyNumber>::iterator it;
 
   for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end();
-       it++) it->setLookingForSubclones(seekSubclones);
+       ++it) it->setLookingForSubclones(seekSubclones);
 }
 
 void* GenomeCopyNumber_readMateFile_wrapper(void *arg)
@@ -5492,7 +5492,7 @@ double GenomeCopyNumber::Percentage_GenomeExplained(int& unexplainedChromosomes)
   bool unexplained = 0;
   int  threshold   = 10;
 
-  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); it++) {
+  for (it = chrCopyNumber_.begin(); it != chrCopyNumber_.end(); ++it) {
     if (!((it->getChromosome().find("X") != string::npos) ||
           (it->getChromosome().find("Y") != string::npos))) {
       int fragmentLength = 0;
@@ -5500,7 +5500,7 @@ double GenomeCopyNumber::Percentage_GenomeExplained(int& unexplainedChromosomes)
       if (unexplained) unexplainedChromosomes++;
       unexplained = 0;
 
-      for (int i = 0; i < it->getNumberOfFragments(); i++) { // for each
+      for (int i = 0; i < it->getNumberOfFragments(); ++i) { // for each
                                                              // fragment:
         fragment_median2 = it->getMedianValuesAt(i);
         fragmentLength   = it->getFragmentLengthsAt(i);
