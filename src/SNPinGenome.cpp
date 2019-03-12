@@ -131,7 +131,7 @@ void SNPinGenome::readSNPs(std::string const& inFile)
       fileSNP.close();
       FILE  *stream;
       char   buffer[MAX_BUFFER];
-      string command = "gzip -cd " + inFile;
+      string command = "pigz -cd " + inFile;
       stream =
             #if defined(_WIN32)
         _popen(command.c_str(), "r");
@@ -519,7 +519,7 @@ void SNPinGenome::assignValues(std::string const& inFile,
 #endif // ifdef PROFILE_TRACE
 
     if (inFile.substr(inFile.size() - 3, 3).compare(".gz") == 0) {
-      string command = "gzip -cd " + inFile;
+      string command = "pigz -cd " + inFile;
       FILE  *stream  =
             #if defined(_WIN32)
         _popen(command.c_str(), "r");

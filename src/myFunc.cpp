@@ -411,7 +411,7 @@ long getLineNumber(std::string const& fileName,
   char   buffer[MAX_BUFFER];
 
   if (fileName.substr(fileName.size() - 3, 3).compare(".gz") == 0) {
-    string command = "gzip -cd " + fileName;
+    string command = "pigz -cd " + fileName;
     stream =
         #if defined(_WIN32)
       _popen(command.c_str(), "r");
@@ -493,7 +493,7 @@ long getReadNumberFromPileup(std::string const& fileName) {
   if (fileName.substr(fileName.size() - 3, 3).compare(".gz") == 0) {
     FILE  *stream;
     char   buffer[MAX_BUFFER];
-    string command = "gzip -cd " + fileName;
+    string command = "pigz -cd " + fileName;
     stream =
             #if defined(_WIN32)
       _popen(command.c_str(), "r");

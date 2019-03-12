@@ -152,7 +152,7 @@ float BAFpileup::calculateFlankLength(std::string const& mateFileName,
     }
 
     if (mateFileName.substr(mateFileName.size() - 3, 3).compare(".gz") == 0) {
-      command = "gzip -c -d " + mateFileName;
+      command = "pigz -cd " + mateFileName;
     }
     stream =
             #if defined(_WIN32)

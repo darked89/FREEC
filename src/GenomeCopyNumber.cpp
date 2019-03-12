@@ -422,7 +422,7 @@ void GenomeCopyNumber::fillMyHash(std::string const& mateFileName,
       }
     }
     else {
-      command = "gzip -cd " + mateFileName;
+      command = "pigz -cd " + mateFileName;
     }
 
     inputFormat = getInputFormat(myInputFormat);
