@@ -102,7 +102,7 @@ bool checkChrLen(const std::string& chrLenFile, const std::string& targetBed) {
       toReturn = false;
       cerr << "Error: chromosome " << names[i] << " present in your " <<
         chrLenFile <<
-      " file was not detected in your file with capture regions " <<
+        " file was not detected in your file with capture regions " <<
         targetBed << "\n";
       cerr << "Please solve this issue and rerun Control-FREEC\n";
       cerr << "For example, you can remove chromosome " << names[i] <<
@@ -1398,13 +1398,15 @@ int calculateBreakpoints_general(double               threshold,
            (breakPointType == NOCALL) || (breakPointType == HALFLENGTH)) { // we
                                                                            // should
                                                                            // split
-                                                                           // a breakpoint
+                                                                           // a
+                                                                           // breakpoint
                                                                            // into
                                                                            // two
                                                                            // if
                                                                            // there
                                                                            // is
-                                                                           // a difference
+                                                                           // a
+                                                                           // difference
                                                                            // in
                                                                            // "shift_bp"
     vector<int> bpWithAddedPoints;
@@ -1480,7 +1482,7 @@ string pathAppend(const string& p1, const string& p2) {
   char lastSymb =  p1[p1.length() - 1];
 
   if ((lastSymb != sep) && (lastSymb != sep2)) { // Need to add a
-    tmp += sep;                                  // path separator
+    tmp += sep; // path separator
     return tmp + p2;
   }
   else return p1 + p2;
@@ -1507,6 +1509,9 @@ int isSpaceCharacter(const char& a)  {
 }
 
 float polynomial(const float x, const double a, const double b, const double c) { //
+                                                                                  //
+                                                                                  //
+                                                                                  //
                                                                                   // ax^2+bx+c
   return float(a * x * x + b * x + c);
 }
@@ -2401,8 +2406,8 @@ double calculateLogLikelyHoodNormalMixtureForBAFs(vector<float>X,
   int    iterationCount    = 0;
   int    maxIterationCount = 10000;
 
-  float maxSigma    = 0.07; // used only if isMuFixed==TRUE
-  float minOmega    = 0.6;  // used only if isMuFixed==TRUE; for the sum of the
+  float maxSigma = 0.07;    // used only if isMuFixed==TRUE
+  float minOmega = 0.6;     // used only if isMuFixed==TRUE; for the sum of the
                             // two components in case of CN>2
   float minMinOmega = 0.15; // used only if isMuFixed==TRUE; for one component
 
@@ -2639,11 +2644,13 @@ double calculateLogLikelyHoodNormalMixtureForBAFs(vector<float>X,
   if (iterationCount ==
       maxIterationCount) cerr <<
       "..Warning: done in maximum number of iterations: " << iterationCount <<
-    "\n";
+      "\n";
 
 
-  for (int i = 0; i < numberOfStates; i++) delete (h[i]);
-  delete (h);
+  for (int i = 0; i < numberOfStates; i++) {
+    delete[] h[i];
+  }
+  delete[] h;
   sigma.clear();
   Omega.clear();
 
