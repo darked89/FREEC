@@ -137,7 +137,7 @@ float EntryCNV::compare(EntryCNV c2,
       ((copyNumber_ == ploidy) && (c2.getCopyNumber() == controlPloidy))) {
     int startControl = c2.getStart() - overlapPrecision; // to get larger window
                                                          // in the control..
-    int endControl   = c2.getEnd() + overlapPrecision;
+    int endControl = c2.getEnd() + overlapPrecision;
 
     if ((endControl < start_) || (startControl > end_)) return 0;
 

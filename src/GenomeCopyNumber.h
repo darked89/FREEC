@@ -89,20 +89,20 @@ public:
                                                      // should be distributed as
                                                      // Xi_sqaure if the null
                                                      // hypo is correct
-  void   calculateCopyNumberProbs_and_genomeLength(int breakPointType);
-  void   calculateCopyNumberProbs_and_exomeLength(int breakPointType);
-  void   deleteFlanks(int telo_centromeric_flanks);
-  void   recalcFlanks(int telo_centromeric_flanks,
-                      int minNumberOfWindows);
-  int    calculateRatioUsingCG(bool  intercept,
-                               float minExpectedGC,
-                               float maxExpectedGC); // will try different
-                                                     // degrees; returns 1 if
-                                                     // #interation < max
-  int    calculateRatioUsingCG(int   degree,
-                               bool  intercept,
-                               float minExpectedGC,
-                               float maxExpectedGC);
+  void calculateCopyNumberProbs_and_genomeLength(int breakPointType);
+  void calculateCopyNumberProbs_and_exomeLength(int breakPointType);
+  void deleteFlanks(int telo_centromeric_flanks);
+  void recalcFlanks(int telo_centromeric_flanks,
+                    int minNumberOfWindows);
+  int  calculateRatioUsingCG(bool  intercept,
+                             float minExpectedGC,
+                             float maxExpectedGC); // will try different
+                                                   // degrees; returns 1 if
+                                                   // #interation < max
+  int calculateRatioUsingCG(int   degree,
+                            bool  intercept,
+                            float minExpectedGC,
+                            float maxExpectedGC);
 
   void recalculateRatioUsingCG(int   degree,
                                bool  intercept,

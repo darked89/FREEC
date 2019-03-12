@@ -88,7 +88,7 @@ void ThreadPool::run()
   if (thrPoolManager->getFlags() & ThreadPoolManager::VERBOSE) {
     thrPoolManager->lock();
     std::cout << "Thread pool [" << getName() << "] started [" <<
-    thread_list.size() << " threads]\n";
+      thread_list.size() << " threads]\n";
     thrPoolManager->unlock();
   }
 
@@ -105,7 +105,7 @@ void ThreadPool::run()
     if (thrPoolManager->getFlags() & ThreadPoolManager::VERBOSE) {
       thrPoolManager->lock();
       std::cout << "Thread launched [" << getName() << "#" << thread_num << ":" <<
-      tid << "] at [" << (time(NULL) - t0) << " secs]" << std::endl;
+        tid << "] at [" << (time(NULL) - t0) << " secs]" << std::endl;
       thrPoolManager->unlock();
     }
     thread_map[thread] = true;
@@ -135,8 +135,8 @@ void ThreadPool::checkOneThreadFinished(std::map<Thread *, bool>& thread_map)
       long long duration_sec  = duration_usec / 1000000;
       thrPoolManager->lock();
       std::cout << "Thread terminated [" << getName() << "#" <<
-      finished_thread->getNumber() << ":" << finished_thread->getThreadSelf() <<
-      "] in [" << duration_sec << "." <<
+        finished_thread->getNumber() << ":" << finished_thread->getThreadSelf() <<
+        "] in [" << duration_sec << "." <<
       (duration_usec - duration_sec * 1000000) << " secs]" << std::endl;
       thrPoolManager->unlock();
     }

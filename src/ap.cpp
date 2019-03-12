@@ -1380,7 +1380,7 @@ bool ap::fp_greater_eq(double v1, double v2)
    }
 
    void ap::explodestring(std::string s, char sep, std::vector<std::string>
-    **pOutput)
+ **pOutput)
    {
     std::string tmp;
     int i;
@@ -1540,10 +1540,10 @@ bool ap::fp_greater_eq(double v1, double v2)
         pdataset->valsize = atol(RowsArr[1].c_str());
         pdataset->tstsize = atol(RowsArr[2].c_str());
         pdataset->totalsize = pdataset->trnsize + pdataset->valsize +
-         *pdataset->tstsize;
+ * pdataset->tstsize;
     }
     if( pdataset->totalsize<=0 || pdataset->trnsize<0 || pdataset->valsize<0 ||
-     *pdataset->tstsize<0 )
+ * pdataset->tstsize<0 )
         return false;
     TrnFirst = 0;
     TrnLast = TrnFirst + pdataset->trnsize;
@@ -1567,7 +1567,7 @@ bool ap::fp_greater_eq(double v1, double v2)
     if( ColsArr.size()==4 )
     {
         if( ap::strtolower(ColsArr[0])!="reg" &&
-         *ap::strtolower(ColsArr[0])!="cls" )
+ * ap::strtolower(ColsArr[0])!="cls" )
             return false;
         if( ColsArr[2]!="=>" )
             return false;
@@ -1595,24 +1595,24 @@ bool ap::fp_greater_eq(double v1, double v2)
     //
     pdataset->all.setlength(pdataset->totalsize, pdataset->nin+pdataset->nout);
     if( pdataset->trnsize>0 ) pdataset->trn.setlength(pdataset->trnsize,
-     *pdataset->nin+pdataset->nout);
+ * pdataset->nin+pdataset->nout);
     if( pdataset->valsize>0 ) pdataset->val.setlength(pdataset->valsize,
-     *pdataset->nin+pdataset->nout);
+ * pdataset->nin+pdataset->nout);
     if( pdataset->tstsize>0 ) pdataset->tst.setlength(pdataset->tstsize,
-     *pdataset->nin+pdataset->nout);
+ * pdataset->nin+pdataset->nout);
 
     //
     // read data
     //
     for(LinesRead=0, i++; i!=Lines.end() && LinesRead<pdataset->totalsize; i++,
-     *LinesRead++)
+ * LinesRead++)
     {
         std::string sss = *i;
         ap::explodestring(ap::xtrim(*i), ' ', &VarsArr);
         if( VarsArr.size()!=pdataset->nin+pdataset->nout )
             return false;
         int tmpc =
-         *ap::round(atof(VarsArr[pdataset->nin+pdataset->nout-1].c_str()));
+ * ap::round(atof(VarsArr[pdataset->nin+pdataset->nout-1].c_str()));
         if( pdataset->nclasses>0 && (tmpc<0 || tmpc>=pdataset->nclasses) )
             return false;
         for(j=0; j<pdataset->nin+pdataset->nout; j++)
@@ -1657,7 +1657,7 @@ bool ap::fp_greater_eq(double v1, double v2)
     if( i==Lines.end() )
         return false;
     if( sscanf(i->c_str(), " columns = %d %d ", &pdataset->nin,
-     *&pdataset->nout)!=2 )
+ *&pdataset->nout)!=2 )
         return false;
     if( pdataset->nin<=0 || pdataset->nout==0 || pdataset->nout==-1)
         return false;
@@ -1680,13 +1680,13 @@ bool ap::fp_greater_eq(double v1, double v2)
     if( i==Lines.end() )
         return false;
     if( sscanf(i->c_str(), " rows = %d %d %d ", &pdataset->trnsize,
-     *&pdataset->valsize, &pdataset->tstsize)!=3 )
+ *&pdataset->valsize, &pdataset->tstsize)!=3 )
         return false;
     if( (pdataset->trnsize<0) || (pdataset->valsize<0) || (pdataset->tstsize<0)
-     *)
+ *)
         return false;
     if( (pdataset->trnsize==0) && (pdataset->valsize==0) &&
-     *(pdataset->tstsize==0) )
+ *(pdataset->tstsize==0) )
         return false;
     nRows = pdataset->trnsize+pdataset->valsize+pdataset->tstsize;
     pdataset->size = nRows;
@@ -1711,7 +1711,7 @@ bool ap::fp_greater_eq(double v1, double v2)
             if( sscanf(Values[nCol].c_str(), "%lg", &v)!=1 )
                 return false;
             if( (nCol==nColumns-1) && pdataset->iscls && ((round(v)<0) ||
-             *(round(v)>=pdataset->nclasses)) )
+ *(round(v)>=pdataset->nclasses)) )
                 return false;
             if( (nCol==nColumns-1) && pdataset->iscls )
                 arr(nRow, nCol) = round(v);

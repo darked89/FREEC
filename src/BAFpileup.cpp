@@ -107,7 +107,8 @@ float BAFpileup::calculateFlankLength(std::string const& mateFileName,
                                       std::string        SambambaThreads)
 {
   if (matesOrientation_str == "0") return 0;  // do not add anything in case of
-                                              // single end data
+
+  // single end data
 
   if (getInputFormat(inputFormat_str) != SAM_INPUT_FORMAT) return 0;
 

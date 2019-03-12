@@ -57,12 +57,12 @@
 # ifndef AP_UNKNOWN
 #  define AP_UNKNOWN
 # endif // ifndef AP_UNKNOWN
-#endif // ifndef AP_WIN32
+#endif  // ifndef AP_WIN32
 #ifdef AP_WIN32
 # ifdef AP_UNKNOWN
 #  error Multiple environments are declared!
 # endif // ifdef AP_UNKNOWN
-#endif // ifdef AP_WIN32
+#endif  // ifdef AP_WIN32
 
 /********************************************************************
    This symbol is used for debugging. Do not define it and do not remove
@@ -868,7 +868,7 @@ typedef template_2d_array<bool>        boolean_2d_array;
    bool readstrings(std::string file, std::list<std::string> *pOutput,
       std::string comment);
    void explodestring(std::string s, char sep, std::vector<std::string>
-      *pOutput);
+ * pOutput);
    std::string xtrim(std::string s);*/
 
 /********************************************************************

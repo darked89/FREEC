@@ -1246,7 +1246,7 @@ static bool bidiagonalsvddecompositioninternal(ap::real_1d_array& d,
         ap::vmove(&u(ustart, j + ustart - 1),
                   u.getstride(),
                   &utemp(ustart),
-                                                 1,
+                  1,
                   ap::vlen(ustart,
                            uend));
       }

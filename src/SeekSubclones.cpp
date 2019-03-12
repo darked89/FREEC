@@ -98,7 +98,7 @@ void SeekSubclones::getSegmentsInfo(GenomeCopyNumber& samplecopynumber,
       cerr << "Problem with the number of breakpoints:" << breakpoints.size() <<
         " != " <<
         samplecopynumber.getChrCopyNumberAt(index).getMedianValues().size() <<
-      "\n";
+        "\n";
       exit(-1);
     }
 

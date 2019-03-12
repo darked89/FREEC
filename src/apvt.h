@@ -123,10 +123,10 @@ T vdotproduct(const_raw_vector<T>v1, const_raw_vector<T>v2)
         offset14 = 4 * offset11;
     int offset21 = v2.GetStep(), offset22 = 2 * offset21, offset23 = 3 * offset21,
         offset24 = 4 * offset21;
-    T r         = 0;
-    const T *p1 = v1.GetData();
-    const T *p2 = v2.GetData();
-    int imax    = v1.GetLength() / 4;
+    T r          = 0;
+    const T *p1  = v1.GetData();
+    const T *p2  = v2.GetData();
+    int imax     = v1.GetLength() / 4;
     int i;
 
     for (i = 0; i < imax; i++)

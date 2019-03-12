@@ -114,14 +114,14 @@ void SNPinGenome::readSNPs(std::string const& inFile)
     // check whether the file is compressed:
     bool ifGZ = 0;
 
-    if (inFile.substr(inFile.size() - 3, 3).compare(".gz") == 0) ifGZ = 1; // check
-                                                                           // whether
-                                                                           // the
-                                                                           // file
-                                                                           // is
-                                                                           // in
-                                                                           // VCF
-                                                                           // format:
+    if (inFile.substr(inFile.size() - 3, 3).compare(".gz") == 0) ifGZ = 1;  // check
+                                                                            // whether
+                                                                            // the
+                                                                            // file
+                                                                            // is
+                                                                            // in
+                                                                            // VCF
+                                                                            // format:
     bool ifVCF        = 0;
     std::size_t found = inFile.find(".vcf");
 
@@ -408,11 +408,11 @@ long SNPinGenome::processPileUPLine(int             & positionCount,
 
       //                    if (localBAF>=0) {
       //                        heterozygousBAFs.push_back(localBAF);
-      //  
+      //
       //                      heterozygousBAFs05.push_back(fabs(localBAF-0.5));
-      //  
-      //   
-      //   
+      //
+      //
+      //
       //                heterozygousBAFposition.push_back(sNPpositionToProceed);
       //                    }
     } catch (const char *error) {
@@ -446,15 +446,15 @@ long SNPinGenome::processPileUPLine(int             & positionCount,
 
         //                        if (localBAF>=0) {
         //                            heterozygousBAFs.push_back(localBAF);
-        //  
-        //   
-        //   
+        //
+        //
+        //
         //                    heterozygousBAFs05.push_back(fabs(localBAF-0.5));
-        //  
-        //   
-        //   
-        //   
-        //   
+        //
+        //
+        //
+        //
+        //
         //              heterozygousBAFposition.push_back(sNPpositionToProceed);
         //
         //                        }
@@ -553,7 +553,7 @@ void SNPinGenome::assignValues(std::string const& inFile,
 #ifdef PROFILE_TRACE
     std::cout << "PROFILING [tid=" << pthread_self() << "]: " << inFile <<
       " read in " << (time(NULL) - t0) << " seconds [assignValues]\n" <<
-    std::flush;
+      std::flush;
 #endif // ifdef PROFILE_TRACE
 
 

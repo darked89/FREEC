@@ -135,7 +135,7 @@ void ChrDensity::calculateLogRatio(ChrDensity controlCD, std::string type) {
                                                                           i]) / factorial(
                                                                         coverage_[
                                                                           i])) <<
-        "\t" << coverage_[i] <<
+          "\t" << coverage_[i] <<
           "\t" << y << "\n";
       }
     }

@@ -1753,6 +1753,9 @@ int runWithDefinedPloidy(int                ploidy,
       }
 
       if (has_BAF && (forceGC != 1) && !ifTargeted && (WESanalysis == false)) { //
+                                                                                //
+                                                                                //
+                                                                                //
                                                                                 // calculateRatioUsingCG
         if (intercept !=
             1) cerr <<
@@ -1833,9 +1836,9 @@ int runWithDefinedPloidy(int                ploidy,
     //                bkpArg = new
     // GenomeCopyNumberCalculateBreakpointArgWrapper(controlCopyNumber,
     // breakPointThreshold, breakPointType);
-    //  
-    //   
-    //   
+    //
+    //
+    //
     //        thrPool->addThread(GenomeCopyNumber_calculateBreakpoint_wrapper,
     // bkpArg);
     //                }

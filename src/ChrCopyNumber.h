@@ -70,14 +70,14 @@ public:
                                       // about medians themselves is stored in
                                       // medianValues_ and about SD in sd_,
                                       // lengths of fragments in bpLengths_
-  void   calculateCopyNumberMedian(int  ploidy,
-                                   int  minCNAlength,
-                                   bool noisyData,
-                                   bool CompleteGenomicsData,
-                                   bool isLogged); // create median profiles as
-                                                   // calculateCopyNumberMedian(),
-                                                   // but merges close regions
-                                                   // (roundByPloidy(median))
+  void calculateCopyNumberMedian(int  ploidy,
+                                 int  minCNAlength,
+                                 bool noisyData,
+                                 bool CompleteGenomicsData,
+                                 bool isLogged); // create median profiles as
+                                                 // calculateCopyNumberMedian(),
+                                                 // but merges close regions
+                                                 // (roundByPloidy(median))
   void recalcFlanksForIndeces(int i,
                               int j);
   void recalcFlanks(int telo_centromeric_flanks,
